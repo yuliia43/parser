@@ -19,6 +19,7 @@ public class JSONObjectCreator {
         object.put("productName", product.getProductName());
         object.put("price", product.getPrice());
         object.put("color", product.getColor());
+        addSizes(product, object);
         List<Product> anotherColors = product.getAnotherColors();
         if (anotherColors != null) {
             JSONArray array = new JSONArray();
@@ -32,11 +33,22 @@ public class JSONObjectCreator {
                 //write price only if it is unique
                 if (!product.getPrice().equals(anotherProduct.getPrice()))
                     newObject.put("price", anotherProduct.getPrice());
+                addSizes(anotherProduct, newObject);
                 array.add(newObject);
             }
             object.put("anotherColors", array);
         }
         return object;
+    }
+
+    //CURRENTLY ADDS ONLY SIZES IN  BUBBLES
+    private static void addSizes(Product product, JSONObject jsonObject) {
+        List<String> productSizes = product.getSizes();
+        if (productSizes != null) {
+            JSONArray sizesJSONArray = new JSONArray();
+            sizesJSONArray.addAll(productSizes);
+            jsonObject.put("sizes", sizesJSONArray);
+        }
     }
 
 }

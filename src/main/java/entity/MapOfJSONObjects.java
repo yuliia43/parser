@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class MapOfJSONObjects {
     private static Map<String, JSONObjects> mapOfJSONObjects;
 
+    //MAP OF JSON OBJECTS' LIST HOLDERS
     static {
         mapOfJSONObjects = new HashMap<String, JSONObjects>();
         mapOfJSONObjects.put(Strings.PRODUCT_PAGE, new JSONObjects(new ArrayList<JSONObject>()));

@@ -28,12 +28,11 @@ public class ProductPagePAJR extends ParserAndJSONReceiver {
     }
 
     @Override
-    public void parse() throws IOException {
-        super.parse();
+    protected void generateJSON() {
         product = ((ProductPageParser) parser).getProduct();
         JSONObject jsonFromProduct = JSONObjectCreator.getJSONFromProduct(product);
         JSONObjects jsonObjects = getJSONObjects();
         jsonObjects.addElement(jsonFromProduct);
-        Map map = MapOfJSONObjects.getMapOfJSONObjects();
     }
+
 }

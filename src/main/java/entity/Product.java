@@ -14,6 +14,7 @@ public class Product {
     private String price;
     private String color;
     private List<Product> anotherColors;
+    private List<String> sizes;
 
     public Product(String articleId, String productName, String brand, String price, String color) {
         this.articleId = articleId;
@@ -81,5 +82,13 @@ public class Product {
 
     public void addAnotherColors(Product anotherColor) {
         this.anotherColors.add(anotherColor);
+    }
+
+    public List<String> getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(List<String> sizes) {
+        this.sizes = sizes;
     }
 }

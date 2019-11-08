@@ -3,8 +3,6 @@ package entity;
 import org.json.simple.JSONObject;
 
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Yuliia Shcherbakova ON 07.11.2019

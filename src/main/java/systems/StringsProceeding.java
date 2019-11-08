@@ -5,11 +5,11 @@ package systems;
  * @project parser
  */
 public class StringsProceeding {
-
-    public static String generateUri(String id, String productName, String brand) {
+    public static String generateUriForProducts(String id, String productName, String brand) {
         return "/p/"+convertString(brand)+"/"+convertString(productName)+"-"+id;
     }
 
+    //converts string to uri format
     private static String convertString(String str) {
         return str = str.toLowerCase()
                 .replace(" & ", "-")

@@ -22,13 +22,13 @@ public class ProductPageParser extends Parser {
     private String articleId;
     private Product product;
 
-    public ProductPageParser(String url, Product product, JSONObjectsEnum whatToParse) {
-        super(url, whatToParse);
+    public ProductPageParser(String url, Product product) {
+        super(url);
         this.product = product;
     }
 
-    public ProductPageParser(String url, String articleId, JSONObjectsEnum whatToParse) {
-        super(url, whatToParse);
+    public ProductPageParser(String url, String articleId) {
+        super(url);
         this.articleId = articleId;
     }
 
@@ -44,6 +44,42 @@ public class ProductPageParser extends Parser {
             throw e;
         }
         Elements section = document.getElementsByAttributeValue("data-test-id", "StaticSplitSection");
+        Product tempProduct = receiveProduct(section);
+        addSizes(section, tempProduct);
+        parseProduct(section, tempProduct);
+        Counters.incrementProducts();
+    }
+
+    //searching sizes for products; recently searching only sizes in bubble
+    private void addSizes(Elements section, Product tempProduct) {
+        Elements bubbleSizes = section.select("[data-test-id=SizeBubbleList] [data-test-id=SizeBubble_available]");
+        List<String> sizes = new ArrayList<String>();
+        for (Element size : bubbleSizes) {
+            sizes.add(size.text());
+        }
+        if (!sizes.isEmpty())
+            tempProduct.setSizes(sizes);
+    }
+
+    //detects if product is root and parses it in appropriate way
+    private void parseProduct(Elements section, Product tempProduct) throws IOException {
+        if (product == null) {
+            this.product = tempProduct;
+            Elements colorsDiv = section
+                    .select("[data-test-id=ThumbnailsList],[data-test-id=Slider]");
+            for (Element colour : colorsDiv.select("a").next()) {
+                String uri = colour.attr("href");
+                parsingAnotherColors(uri);
+            }
+        } else {
+            setArticleId();
+            if (product.getAnotherColors() == null)
+                product.setAnotherColors(new ArrayList<Product>());
+            product.addAnotherColors(tempProduct);
+        }
+    }
+
+    private Product receiveProduct(Elements section) {
         String productName = section
                 .select("div[data-test-id=ProductName]")
                 .first()
@@ -52,8 +88,6 @@ public class ProductPageParser extends Parser {
                 .select("img[data-test-id=BrandLogo]")
                 .first()
                 .attr("alt");
-        Elements colorsDiv = section
-                .select("[data-test-id=ThumbnailsList],[data-test-id=Slider]");
         String colorInfo = section
                 .select("[data-test-id=ColorVariantColorInfo]").first().text();
         Elements priceEl = section.select("[data-test-id=ProductPriceFormattedBasePrice]");
@@ -61,42 +95,15 @@ public class ProductPageParser extends Parser {
                 : section.select("[data-test-id=FormattedSalePrice]")
                 .first()
                 .text();
-        if (product == null) {
-            product = new Product(articleId, productName, brand, price, colorInfo);
-            List<String> colorsStrs = new ArrayList<String>();
-            for (Element colour : colorsDiv.select("a").next()) {
-                String uri = colour.attr("href");
-                parsingAnotherColors(uri);
-            }
-        } else {
-            setArticleId();
-            if (product.getAnotherColors() == null)
-                initAnotherColors();
-            product.addAnotherColors(new Product(articleId, productName, price, colorInfo));
-        }
-
-        Counters.incrementProducts();
+        return new Product(articleId, productName, brand, price, colorInfo);
     }
 
     private void parsingAnotherColors(String uri) throws IOException {
         String page = StringsProceeding.clearURI(getUrl());
-        ProductPageParser pageParser = pageParser =
-                new ProductPageParser(page.concat(uri), product, whatToParse);
+        ProductPageParser pageParser =
+                new ProductPageParser(page.concat(uri), product);
         pageParser.parse();
 
-    }
-
-    private void initAnotherColors() {
-        switch (whatToParse) {
-            case PRODUCT_PAGE: {
-                product.setAnotherColors(new ArrayList<Product>());
-                break;
-            }
-            case PRODUCT_PAGE_CONCURRENT: {
-                product.setAnotherColors(new CopyOnWriteArrayList<Product>());
-                break;
-            }
-        }
     }
 
     private void setArticleId() {

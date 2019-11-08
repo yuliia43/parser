@@ -14,9 +14,8 @@ public abstract class Parser {
     private String url;
     protected JSONObjectsEnum whatToParse;
 
-    public Parser(String url, JSONObjectsEnum whatToParse) {
+    public Parser(String url) {
         this.url = url;
-        this.whatToParse = whatToParse;
     }
 
     protected Connection connect() {

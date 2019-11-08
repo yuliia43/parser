@@ -15,6 +15,7 @@ public class JSONObjectsFactory {
 
     }
 
+    //RECEIVE MAP ENTRY DEPENDING ON WAY TO PARSE
     public static JSONObjects getJSONObjectList(JSONObjectsEnum objectsEnum) {
         switch (objectsEnum) {
             case PRODUCT_PAGE:

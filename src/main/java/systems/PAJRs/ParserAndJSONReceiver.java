@@ -18,7 +18,7 @@ import java.io.IOException;
  * THIS CLASS PARSES PAGE AND FILLS JSON OBJECTS ARRAY
  *
  */
-public class ParserAndJSONReceiver {
+public abstract class ParserAndJSONReceiver {
     protected Parser parser;
     private JSONObjectsEnum objectsEnum;
 
@@ -27,9 +27,13 @@ public class ParserAndJSONReceiver {
         this.objectsEnum = objectsEnum;
     }
 
+
     public void parse() throws IOException {
             parser.parse();
+            generateJSON();
     }
+
+    protected abstract void generateJSON();
 
     protected JSONObjects getJSONObjects(){
         return JSONObjectsFactory.getJSONObjectList(objectsEnum);

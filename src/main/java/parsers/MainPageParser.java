@@ -8,8 +8,8 @@ import kong.unirest.Unirest;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import systems.PAJRs.ProductPagePAJR;
-import systems.StringsProceeding;
 import systems.PAJRs.threads.ProductPageConcurrentPAJR;
+import systems.StringsProceeding;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,8 +25,10 @@ public class MainPageParser extends Parser {
     private String dataLoadUrl; //url to load data (founded by debugging website)
 
     public MainPageParser(String url, String dataLoadUrl, int numberOfProducts,  JSONObjectsEnum whatToParse) {
-        super(url, whatToParse);
-        /*loading only top numberOfProducts entries*/
+        super(url);
+        this.whatToParse = whatToParse;
+        /*loading only top `numberOfProducts` entries;
+        *`numberOfProducts` here is number of products displayed on the page*/
         this.dataLoadUrl = dataLoadUrl.concat(String.valueOf(numberOfProducts));
     }
 
@@ -45,7 +47,7 @@ public class MainPageParser extends Parser {
             String id = jsonObject.get("id").toString();
             String brand = getAttributeValue(jsonObject, "brand");
             String name = getAttributeValue(jsonObject, "name");
-            String uri = StringsProceeding.generateUri(id, name, brand);
+            String uri = StringsProceeding.generateUriForProducts(id, name, brand);
             articles.add(new Article(id, uri));
         }
         return articles;
@@ -99,7 +101,7 @@ public class MainPageParser extends Parser {
 
     private ProductPagePAJR parseProductPage(Article article) {
         String uri = article.getUri();
-        Parser parser = new ProductPageParser(getUrl().concat(uri), article.getId(), whatToParse);
+        Parser parser = new ProductPageParser(getUrl().concat(uri), article.getId());
         return getParser(parser);
     }
 

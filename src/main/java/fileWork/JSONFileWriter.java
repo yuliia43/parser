@@ -1,6 +1,5 @@
 package fileWork;
 
-import data.Strings;
 import entity.JSONObjects;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -30,6 +29,7 @@ public class JSONFileWriter {
                 file.createNewFile();
             writer = new FileWriter(file);
             List<JSONObject> jsonObjectList = objects.getJsonObjectList();
+            //System.out.println("Unique products: " + jsonObjectList.size());
             JSONArray array = new JSONArray();
             array.addAll(jsonObjectList);
             writer.write(array.toJSONString());
