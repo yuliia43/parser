@@ -2,7 +2,6 @@ package parsers;
 
 import data.Counters;
 import entity.Product;
-import enums.JSONObjectsEnum;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,7 +11,6 @@ import systems.StringsProceeding;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Yuliia Shcherbakova ON 06.11.2019

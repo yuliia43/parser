@@ -1,13 +1,9 @@
 package systems.PAJRs;
 
 import entity.JSONObjects;
-import entity.Product;
 import enums.JSONObjectsEnum;
 import factories.JSONObjectsFactory;
-import org.json.simple.JSONObject;
 import parsers.Parser;
-import parsers.ProductPageParser;
-import systems.JSONObjectCreator;
 
 import java.io.IOException;
 

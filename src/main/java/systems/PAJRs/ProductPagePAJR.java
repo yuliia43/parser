@@ -1,16 +1,12 @@
 package systems.PAJRs;
 
 import entity.JSONObjects;
-import entity.MapOfJSONObjects;
 import entity.Product;
 import enums.JSONObjectsEnum;
 import org.json.simple.JSONObject;
 import parsers.Parser;
 import parsers.ProductPageParser;
 import systems.JSONObjectCreator;
-
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Yuliia Shcherbakova ON 07.11.2019
